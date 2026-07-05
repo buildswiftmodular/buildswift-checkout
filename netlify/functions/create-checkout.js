@@ -25,7 +25,7 @@ exports.handler = async (event) => {
     if (config.shipping === 'deliver' && config.shipCustomer > 0) lineItems.push({ price_data: { currency: 'usd', product_data: { name: `Shipping to ${config.zip} (${config.shipMiles} mi)` }, unit_amount: config.shipCustomer * 100 }, quantity: 1 });
 
     const session = await stripeClient.checkout.sessions.create({
-      automatic_payment_methods: { enabled: true, allow_redirects: 'always' },
+      payment_method_types: ['card'], { enabled: true, allow_redirects: 'always' },
       line_items: lineItems,
       mode: 'payment',
       success_url: 'https://buildswiftmodular.com/order-success',
